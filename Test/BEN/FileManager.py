@@ -12,4 +12,4 @@ class FileManager(object):
 
 
 flm = FileManager("/");
-print flm.getAllFolders()
+flm.get
