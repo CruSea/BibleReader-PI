@@ -10,5 +10,6 @@ class FileManager(object):
         dirs= filter(os.path.isdir, os.listdir(self.homeDir))
         return dirs
 
-flm = FileManager("/Users/bengeos/Desktop")
-print flm.getAllFiles()
+flm = FileManager("c:\\")
+data = flm.getAllFolders()
+print data
