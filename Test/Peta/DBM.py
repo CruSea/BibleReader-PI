@@ -35,4 +35,4 @@ def get_all_tables(self):
 #table()
 #Data_entery()
 #read_db()
-Filter_db()
+#Filter_db()
