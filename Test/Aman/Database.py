@@ -1,5 +1,5 @@
 import MySQLdb
-import sys
+
 class database(object):
     def __init__(self,host,user,password,dbname):
         self.host=host
@@ -64,7 +64,23 @@ class database(object):
 
         row = cursor.fetchall()
         return row
-  
+    def edit_row(self,table_name,data_tobe_inserted,id):
+        self.table_name=table_name
+        self.data=data_tobe_inserted
+        self.id=id
+        sql_query = "UPDATE %s SET %s WHERE %s" %(self.table_name,self.data,self.id)
+        cursor.execute(sql_query)
+        db.commit()
+        print "data updated Successfully"
+    def delet_row(self,table_name,id):
+        self.table_name=table_name
+        self.id=id
+        sql_query = "DELETE FROM %s WHERE %s" % (self.table_name,self.id)
+        cursor.execute(sql_query)
+        db.commit()
+        print "row successfully deleted"
+
+
 
 
 
@@ -74,7 +90,10 @@ class database(object):
 obj=database('localhost','root','','python')
 # obj.create_table('student','name','id','department')
 # obj.Insert_datas('student','Boaz','98','Electrical')
-print obj.get_all_tables()
-print obj.get_all_rows('STUDENT')
-print obj.get_single_row('STUDENT','98')
+# print obj.get_all_tables()
+# print obj.get_all_rows('STUDENT')
+# print obj.get_single_row('STUDENT','98')
+obj.edit_row('STUDENT','id=120','id=98')
+obj.delet_row('STUDENT','id=99')
+
 
