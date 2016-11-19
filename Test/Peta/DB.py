@@ -23,17 +23,16 @@ class database(object):
         for row in cursor.fetchall():
             print (row)
 
-    def getAllTestaments_id(self, id):
-        if id == 1:
-            cursor.execute('SELECT * FROM content WHERE Testament = 1 ')
-            print'old Testament'
-            for row in cursor.fetchall():
-                print (row)
+    def get_all_book(self, testament_id):
+        self.testament_id = testament_id
+        if testament_id ==1:
+            print 'Old Testament'
         else:
-            cursor.execute('SELECT * FROM content WHERE Testament = 2 ')
-            print'New Testament'
-            for row in cursor.fetchall():
-                print (row)
+            print 'New Testament'
+        cursor.execute("SELECT * FROM book WHERE id in(SELECT book FROM Content WHERE Testament='%s' and id in(SELECT ContentID FROM file))" % self.testament_id)
+        for row in cursor.fetchall():
+            print (row)
+
     def getAllChapters(self, book_id):
         self.book_id = book_id
         cursor.execute("SELECT Chapter FROM CONTENT WHERE Book ='%s' " % (self.book_id))
@@ -70,10 +69,11 @@ class database(object):
 
 obj = database('localhost', 'root', '', 'bible_reader')
 
-print obj.getAllTestaments()
-print obj.getAllTestaments_id(2)
-print obj.getAllChapters(2)
-print obj.getContentID('1', '2')
-print obj.getVerse('1', '2')
-print obj.getVerses('1', '1', '4')
-print obj.getFile('1', '2')
+#print obj.getAllTestaments()
+print obj.get_all_book(2)
+#print obj.getAllChapters(2)
+#print obj.getContentID('1', '2')
+#print obj.getVerse('1', '2')
+#print obj.getVerses('1', '1', '4')
+#print obj.getFile('1', '2')
+
