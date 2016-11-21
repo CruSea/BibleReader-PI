@@ -1,4 +1,5 @@
 import mysql.connector
+import Testament as Testament
 
 class DatabaseManager(object):
     def __init__(self,host,user,password,database):
@@ -8,20 +9,32 @@ class DatabaseManager(object):
         self.DBName = database
         try:
             self.Conn = mysql.connector.connect(user=self.DBUser,password=self.DBPass,host=self.DBHost,database=self.DBName)
+            self.Cursor = self.Conn.cursor()
         except mysql.connector.Error as error:
             print error
             exit()
         pass
-    def createTable(self,tableName,tableFields):
+    def getAllTestaments(self):
+        self.Cursor.execute("SELECT * FROM testament")
+        testaments = []
+        found = self.Cursor.fetchall()
+        for item in found:
+            tt = Testament.Testament()
+            tt.hydrate(item)
+            testaments.append(tt)
+        return testaments
+
+    def getAllBooks(self,testamentID):
         pass
-    def addNewEntry(self,tableName,fields):
+    def getAllChapters(self,bookID):
         pass
-    def getEntry(self,tableName,filter):
+    def getContentID(self,bookID,chapterID):
         pass
-    def excuteSQL(self,sql_query):
+    def getVerse(self,contentID,chapterID):
+        pass
+    def getVerses(self,contentID,startNum,endNumd):
         pass
 
 
-
-mydatabase = DatabaseManager("localhost","ben","passben","DeepLife")
-mydatabase.createTable()
+mydatabase = DatabaseManager("localhost","ben","passben","BibleRaspberyPI")
+print  mydatabase.getAllTestaments()
