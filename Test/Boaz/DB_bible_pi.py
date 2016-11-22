@@ -84,13 +84,15 @@ class db_bible(object):
             cursor.execute("SELECT * FROM VERSE WHERE CONTENTID='%s' AND NUMBER='%s'" %
                        (self.Content_id, x))
             found = cursor.fetchone()
-            verses.append(found)
-        file = []
-        for items in verses:
             hydrate_file = Module.File()
-            hydrate_file.hydrate(items)
-            file.append(hydrate_file)
-        return file
+            hydrate_file.hydrate(found)
+            verses.append(found)
+        # file = []
+        # for items in verses:
+        #     hydrate_file = Module.File()
+        #     hydrate_file.hydrate(items)
+        #     file.append(hydrate_file)
+        return verses
 
     def get_File(self, Content_Id, Number):
         self.Content_Id = Content_Id
