@@ -83,7 +83,7 @@ class db_bible(object):
         for x in range(x, y+1):
             cursor.execute("SELECT * FROM VERSE WHERE CONTENTID='%s' AND NUMBER='%s'" %
                        (self.Content_id, x))
-            found = cursor.fetchone()
+            found=cursor.fetchone()
             verses.append(found)
         file = []
         for items in verses:
@@ -107,10 +107,10 @@ class db_bible(object):
 
 
 obj = db_bible('localhost', 'root', '', 'bible_pi')
-print obj.get_All_Testaments()
-print obj.get_All_Books('1')
-print obj.get_All_Chapters('1')
-print obj.get_Content_Id('1', '1')
-print obj.get_Single_Verse('1', '2')
-print obj.get_Verses('1', '1', '3')
-print obj.get_File('1', '1')[0].Folder
+# print obj.get_All_Testaments()
+# print obj.get_All_Books('1')
+# print obj.get_All_Chapters('1')
+# print obj.get_Content_Id('1', '1')
+# print obj.get_Single_Verse('1' ,'2')
+print obj.get_Verses('1', '2', '3')[0].ID
+# print obj.get_File('1', '1')[0].Folder
