@@ -20,15 +20,10 @@ class db_bible(object):
         global cursor
         cursor = db.cursor()
 
-    def get_all_testaments(self):
-        Sql_query = "SELECT * FROM TESTAMENT"
-        cursor.execute(Sql_query)
-        testaments = cursor.fetchall()
-        print "Testaments in the Bible"
-        sql = "SHOW COLUMNS FROM testament"
-        cursor.execute(sql)
-        testaments = []
+    def get_All_Testaments(self):
+        cursor.execute("SELECT * FROM TESTAMENT")
         found = cursor.fetchall()
+        testaments = []
         for item in found:
             hydrate_testaments = Module.Testament()
             hydrate_testaments.hydrate(item)
@@ -36,24 +31,24 @@ class db_bible(object):
         return testaments
 
 
-    def get_all_books(self, testament_id):
-        self.testament_id=testament_id
+    def get_All_Books(self, Testament_Id):
+        self.Testament_Id = Testament_Id
         sql_query=("SELECT * FROM BOOK WHERE id in(SELECT BOOK FROM CONTENT WHERE TESTAMENT='%s' and id in(SELECT CONTENTID FROM FILE))")\
-                  %self.testament_id
+                  %self.Testament_Id
         cursor.execute(sql_query)
-        book = []
         books = cursor.fetchall()
+        book = []
         for items in books:
             hydrate_book = Module.Book()
             hydrate_book.hydrate(items)
             book.append(hydrate_book)
         return book
 
-    def get_all_chapters(self, book_id):
-        self.book_id=book_id
-        sql_query=("SELECT CHAPTER FROM CONTENT WHERE BOOK='%s' ") % self.book_id
+    def get_All_Chapters(self, Book_id):
+        self.Book_id = Book_id
+        sql_query=("SELECT CHAPTER FROM CONTENT WHERE BOOK='%s' ") % self.Book_id
         cursor.execute(sql_query)
-        chapters=cursor.fetchall()
+        chapters = cursor.fetchall()
         hydrate_chapter = Module.Content()
         hydrate_chapter.Chapter = chapters
         return hydrate_chapter
@@ -70,45 +65,52 @@ class db_bible(object):
     def get_Single_Verse(self, Content_Id, Number):
         self.Content_Id=Content_Id
         self.Number=Number
-        v = []
         cursor.execute(("SELECT * FROM verse WHERE contentID='%s' AND NUMBER='%s'")% (self.Content_Id, self.Number))
-        verse = cursor.fetchall()
-        for items in verse:
-            vv = Module.File()
-            vv.hydrate(items)
-            v.append(vv)
-        return v
+        found = cursor.fetchall()
+        verse = []
+        for items in found:
+            hydrate_verse = Module.File()
+            hydrate_verse.hydrate(items)
+            verse.append(hydrate_verse)
+        return verse
     def get_Verses(self, Content_id, Start_Number, End_Number):
         self.Content_id = Content_id
         self.Start_Number = Start_Number
         self.End_Number = End_Number
-        cursor.execute(("SELECT * FROM VERSE WHERE contentID='%s' AND NUMBER='%s'")%
-                       (self.Content_id, self.Start_Number))
-        verses1=cursor.fetchall()
+        verses=[]
+        x = int(self.Start_Number)
+        y = int(self.End_Number)
+        for x in range(x, y+1):
+            cursor.execute("SELECT * FROM VERSE WHERE CONTENTID='%s' AND NUMBER='%s'" %
+                       (self.Content_id, x))
+            found = cursor.fetchone()
+            verses.append(found)
+        file = []
+        for items in verses:
+            hydrate_file = Module.File()
+            hydrate_file.hydrate(items)
+            file.append(hydrate_file)
+        return file
 
-        cursor.execute(("SELECT * FROM VERSE WHERE contentID='%s' AND NUMBER='%s'")%
-                       (self.Content_id, self.End_Number))
-        verses2=cursor.fetchall()
-        return verses1 + verses2
     def get_File(self, Content_Id, Number):
         self.Content_Id = Content_Id
         self.Number = Number
-        f = []
         cursor.execute(("SELECT * FROM FILE WHERE CONTENTID='%s' AND id in(SELECT CONTENTID FROM VERSE WHERE NUMBER='%s')")%
-                       (self.Content_Id,self.Number))
-        files = cursor.fetchall()
-        for items in files:
-            ff = Module.File()
-            ff.hydrate(items)
-            f.append(ff)
-        return f
+                       (self.Content_Id, self.Number))
+        found = cursor.fetchall()
+        file = []
+        for items in found:
+            hydrate_file = Module.File()
+            hydrate_file.hydrate(items)
+            file.append(hydrate_file)
+        return file
 
 
-obj=db_bible('localhost', 'root', '', 'bible_pi')
-# print obj.get_all_testaments()
-# print obj.get_all_books('1')
-print obj.get_all_chapters('1')
-# print obj.get_Content_Id('1', '1')
-# print obj.get_Single_Verse('1' ,'2')
-# print obj.get_Verses('1', '1', '3x')
-# print obj.get_File('1', '1')
+obj = db_bible('localhost', 'root', '', 'bible_pi')
+print obj.get_All_Testaments()
+print obj.get_All_Books('1')
+print obj.get_All_Chapters('1')
+print obj.get_Content_Id('1', '1')
+print obj.get_Single_Verse('1', '2')
+print obj.get_Verses('1', '1', '3')
+print obj.get_File('1', '1')[0].Folder
