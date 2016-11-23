@@ -14,7 +14,7 @@ class db_bible(object):
             passwd=self.password,
             db=self.dbname
 
-            )
+                )
         print ("database connected succesfully")
         global cursor
         cursor=db.cursor()
@@ -23,6 +23,7 @@ class db_bible(object):
         Sql_query=("SELECT * FROM TESTAMENT")
         cursor.execute(Sql_query)
         testaments=cursor.fetchall()
+        # print cursor.description
         print "Testaments in the Bible"
         for x in testaments:
            print x
@@ -63,13 +64,15 @@ class db_bible(object):
         verse=cursor.fetchall()
         print "Verse table Entry"
         return verse
-    def get_verses(self,contentt_id,start_time,end_time):
+
+    def  get_verses(self,contentt_id,start_time,end_time):
         self.contentt_id=contentt_id
         self.start_number=start_time
         self.end_number=end_time
         cursor.execute(("SELECT * FROM VERSE WHERE CONTENTID='%s' AND STARTSEC='%s' AND ENDSEC='%s'")%(self.contentt_id,self.start_number,self.end_number))
         verses=cursor.fetchall()
         return verses
+
     def get_file(self,content_id,number):
         self.content_id=content_id
         self.number=number
@@ -77,12 +80,6 @@ class db_bible(object):
         files=cursor.fetchall()
         print "File table Entry"
         return files
-
-
-
-
-
-
 
 
 obj=db_bible('localhost','root','','bibleraspberypi')

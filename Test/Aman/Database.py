@@ -24,7 +24,7 @@ class database(object):
         self.atr1=atr1
         self.atr2=atr2
         self.atr3=atr3
-        sql_query = "CREATE TABLE IF NOT EXISTS " + self.table_name + "(" + self.atr1 + " TEXT, " + self.atr2 + " INT, " + self.atr3 + " TEXT)"
+        sql_query = "CREATE TABLE  " + self.table_name + "(" + self.atr1 + " TEXT, " + self.atr2 + " INT, " + self.atr3 + " TEXT)"
         # print sql_query
         cursor.execute(sql_query)
         db.commit()
@@ -89,7 +89,7 @@ class database(object):
 
 
 obj=database('localhost','root','','python')
-# obj.create_table('student','name','id','department')
+obj.create_table('student','name','id','department')
 # obj.Insert_datas('student','Boaz','98','Electrical')
 # print obj.get_all_tables()
 # print obj.get_all_rows('STUDENT')
