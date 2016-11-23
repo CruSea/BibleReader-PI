@@ -27,7 +27,7 @@ class File(object):
     def hydrate(self, data):
         self.ID = data[0]
         self.ContentID = data[1]
-        self.FileName = data[2]
+        self.Folder = data[2]
         self.FileName = data[3]
 class Book(object):
     def __init__(self):
