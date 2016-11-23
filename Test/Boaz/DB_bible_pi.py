@@ -1,22 +1,25 @@
-import MySQLdb
 import Module
+import mysql.connector
 
 class db_bible(object):
-    def __init__(self,host, user, password, dbname):
+    def __init__(self,host, user, password, dbname, port):
         self.host = host
         self.user = user
         self.password = password
         self.dbname = dbname
-
+        self.port = port
         global db
-        db =MySQLdb.connect(
-            host=self.host,
-            user=self.user,
-            passwd=self.password,
-            db=self.dbname
-
-            )
-        print ("database connected succesfully")
+        try:
+            db =mysql.connector.connect(
+                host=self.host,
+                database=self.dbname,
+                user=self.user,
+                password = self.password,
+                port=self.port)
+            print 'connected'
+        except Exception as e:
+            print e
+            print "not oonected"
         global cursor
         cursor = db.cursor()
 
@@ -106,11 +109,11 @@ class db_bible(object):
         return file
 
 
-obj = db_bible('localhost', 'root', '', 'bible_pi')
+obj = db_bible('localhost', 'root', 'Boazberhanujesus', 'python', '8080')
 # print obj.get_All_Testaments()
 # print obj.get_All_Books('1')
 # print obj.get_All_Chapters('1')
 # print obj.get_Content_Id('1', '1')
 # print obj.get_Single_Verse('1' ,'2')
-print obj.get_Verses('1', '2', '3')[0].ID
-# print obj.get_File('1', '1')[0].Folder
+# print obj.get_Verses('1', '2', '3')[0].ID
+print obj.get_File('1', '1')[0].Folder
